@@ -262,7 +262,7 @@ export class DotnetChecker implements IDepsChecker {
         );
         await this._logger.error(errorMessage);
       } else {
-        this._telemetry.sendEvent(DepsCheckerEvent.dotnetInstallScriptCompleted, timecost);
+        this._telemetry.sendEvent(DepsCheckerEvent.dotnetInstallScriptCompleted, {}, timecost);
       }
     } catch (error) {
       const timecost = Number(((performance.now() - start) / 1000).toFixed(2));
@@ -272,7 +272,9 @@ export class DotnetChecker implements IDepsChecker {
         }, ` +
         `command = '${command.join(" ")}', options = '${JSON.stringify(
           options
-        )}', error = '${error}', stdout = '${error.stdout}', stderr = '${error.stderr}', timecost = '${timecost}s'`;
+        )}', error = '${error}', stdout = '${error.stdout}', stderr = '${
+          error.stderr
+        }', timecost = '${timecost}s'`;
 
       this._telemetry.sendSystemErrorEvent(
         DepsCheckerEvent.dotnetInstallScriptError,
@@ -400,7 +402,9 @@ export class DotnetChecker implements IDepsChecker {
     dotnetInstallDir: string
   ): Promise<string[]> {
     const command = [
-      isWindows() ? DotnetChecker.escapeFilePath(this.getDotnetInstallScriptPath()) : this.getDotnetInstallScriptPath(),
+      isWindows()
+        ? DotnetChecker.escapeFilePath(this.getDotnetInstallScriptPath())
+        : this.getDotnetInstallScriptPath(),
       "-InstallDir",
       isWindows() ? DotnetChecker.escapeFilePath(dotnetInstallDir) : dotnetInstallDir,
       "-Channel",
