@@ -115,12 +115,12 @@ jobs:
       - name: release rc npm packages to npmjs.org by conventional-commits
         if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.event.inputs.conventional-commits == 'yes' && github.event.inputs.preid == 'rc'}}
         run: |
-          npx lerna publish --conventional-prerelease --preid=rc --no-changelog --yes
+          npx lerna publish from-package --dist-tag=rc --yes
 
       - name: release stable npm packages to npmjs.org by conventional-commits
         if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && github.event.inputs.conventional-commits == 'yes' && github.event.inputs.preid == 'stable'}}
         run: |
-          npx lerna publish --conventional-graduate --no-changelog --yes
+          npx lerna publish from-package --yes
 
       - name: pack vsix
         id: pack-vsix
